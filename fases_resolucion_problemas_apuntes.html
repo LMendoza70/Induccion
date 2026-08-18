@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Fases en la resolución de problemas mediante computadoras — Apuntes</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Caveat:wght@500;700&display=swap');
+
+:root{
+  --paper:#fdfcf5;
+  --line:#c9d8ea;
+  --margin-line:#f0a3a3;
+  --ink:#1f3a5f;
+  --ink2:#2d2d2d;
+  --accent:#c0392b;
+  --accent2:#1e7d4f;
+  --accent3:#7a4fa3;
+  --highlight:#fff2a8;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  background:#e7e2d3;
+  font-family:'Kalam', cursive;
+  color:var(--ink2);
+  padding:24px 8px;
+}
+
+.notebook{
+  max-width:900px;
+  margin:0 auto;
+  background:
+    repeating-linear-gradient(
+      var(--paper),
+      var(--paper) 33px,
+      var(--line) 34px
+    );
+  background-color:var(--paper);
+  border-left:3px solid var(--margin-line);
+  padding:36px 30px 36px 56px;
+  border-radius:2px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  position:relative;
+}
+
+.notebook::before{
+  content:"";
+  position:absolute;
+  left:34px; top:0; bottom:0;
+  width:1px;
+  background:var(--margin-line);
+  opacity:.6;
+}
+
+.header{
+  font-family:'Kalam',cursive;
+  font-size:14px;
+  color:#888;
+  text-align:right;
+  border-bottom:1px dashed #bbb;
+  padding-bottom:6px;
+  margin-bottom:10px;
+}
+
+h1{
+  font-family:'Caveat', cursive;
+  font-size:44px;
+  color:var(--ink);
+  margin:6px 0 2px 0;
+  transform:rotate(-0.5deg);
+}
+
+.subtitle{
+  font-size:18px;
+  color:#555;
+  margin-bottom:20px;
+  font-style:italic;
+}
+
+.tag{
+  display:inline-block;
+  background:var(--highlight);
+  padding:1px 8px;
+  border-radius:4px;
+  transform:rotate(-1deg);
+}
+
+h2{
+  font-family:'Caveat', cursive;
+  font-size:32px;
+  color:var(--accent);
+  border-bottom:2px solid var(--accent);
+  display:inline-block;
+  padding-bottom:2px;
+  margin-top:34px;
+  margin-bottom:10px;
+  transform:rotate(-0.3deg);
+}
+
+h3{
+  font-family:'Caveat', cursive;
+  font-size:26px;
+  color:var(--accent3);
+  margin:22px 0 6px 0;
+}
+
+p, li{
+  font-size:19px;
+  line-height:1.55;
+}
+
+.flow{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+  margin:14px 0 20px 0;
+  font-family:'Caveat',cursive;
+  font-size:21px;
+}
+.flow .step{
+  border:2px solid var(--ink);
+  border-radius:10px;
+  padding:6px 12px;
+  background:#eef4ff;
+  transform:rotate(-1deg);
+}
+.flow .step:nth-child(2n){ transform:rotate(1deg); background:#fff2e6; }
+.flow .arrow{ color:var(--accent); font-size:22px; }
+
+.note-box{
+  border:2px dashed var(--accent2);
+  border-radius:10px;
+  padding:12px 16px;
+  margin:16px 0;
+  background:rgba(30,125,79,0.06);
+  position:relative;
+}
+.note-box::before{
+  content:"📌 IMPORTANTE";
+  font-family:'Caveat',cursive;
+  font-weight:700;
+  color:var(--accent2);
+  font-size:20px;
+  display:block;
+  margin-bottom:4px;
+}
+
+.example{
+  border:2px solid var(--accent3);
+  border-radius:12px;
+  padding:14px 18px;
+  margin:18px 0;
+  background:#f8f4ff;
+  transform:rotate(-0.2deg);
+}
+.example h3{ margin-top:0; }
+.example .badge{
+  display:inline-block;
+  background:var(--accent3);
+  color:#fff;
+  font-family:'Kalam',cursive;
+  font-size:13px;
+  padding:2px 8px;
+  border-radius:10px;
+  margin-left:8px;
+  vertical-align:middle;
+}
+
+.exercise{
+  border:2px solid var(--accent);
+  border-radius:12px;
+  padding:14px 18px;
+  margin:18px 0;
+  background:#fff5f2;
+  transform:rotate(0.3deg);
+}
+.exercise .badge{
+  display:inline-block;
+  background:var(--accent);
+  color:#fff;
+  font-family:'Kalam',cursive;
+  font-size:13px;
+  padding:2px 8px;
+  border-radius:10px;
+  margin-left:8px;
+  vertical-align:middle;
+}
+
+.qa{
+  margin:8px 0 8px 6px;
+}
+.qa .q{
+  color:var(--ink);
+  font-weight:700;
+}
+.checklist{ list-style:none; padding-left:0; }
+.checklist li::before{ content:"✔️ "; }
+
+.underline{
+  text-decoration:underline;
+  text-decoration-color:var(--accent);
+  text-decoration-thickness:2px;
+}
+
+.doodle-divider{
+  text-align:center;
+  color:#bbb;
+  font-size:20px;
+  letter-spacing:10px;
+  margin:22px 0;
+}
+
+.footer{
+  margin-top:30px;
+  text-align:right;
+  font-size:14px;
+  color:#999;
+  border-top:1px dashed #bbb;
+  padding-top:6px;
+}
+
+.callout-yellow{
+  background:var(--highlight);
+  padding:1px 6px;
+  border-radius:3px;
+}
+
+table.answer-guide{
+  width:100%;
+  border-collapse:collapse;
+  font-family:'Kalam',cursive;
+  font-size:16px;
+  margin-top:8px;
+}
+table.answer-guide td{
+  border:1px dashed #999;
+  padding:6px 8px;
+  vertical-align:top;
+}
+table.answer-guide td:first-child{
+  width:150px;
+  font-weight:700;
+  color:var(--ink);
+}
+</style>
+</head>
+<body>
+<div class="notebook">
+
+  <div class="header">Tecnologías de la Información — Curso propedéutico de Lógica de Programación</div>
+
+  <p style="margin:0 0 14px 0;"><a href="./index.html" style="display:inline-block; font-size:15px; color:var(--accent); text-decoration:none; border:2px solid var(--accent3); border-radius:8px; padding:4px 12px; background:#f8f4ff;">← Volver al índice</a></p>
+
+  <h1>Fases en la resolución de problemas <br>mediante computadoras</h1>
+  <div class="subtitle"><span class="tag">Apuntes de clase</span> — Análisis del problema + 3 ejemplos</div>
+
+  <p>La ingeniería de software propone una serie de fases que hay que seguir para
+  desarrollar un programa informático. Es como una <span class="underline">receta de cocina</span>:
+  si te saltas un paso, el platillo (el programa) sale mal. Aquí va el mapa completo:</p>
+
+  <div class="flow">
+    <div class="step">1. Ingeniería de sistemas</div><span class="arrow">→</span>
+    <div class="step">2. Análisis de requisitos</div><span class="arrow">→</span>
+    <div class="step">3. Diseño</div><span class="arrow">→</span>
+    <div class="step">4. Codificación</div><span class="arrow">→</span>
+    <div class="step">5. Pruebas</div><span class="arrow">→</span>
+    <div class="step">6. Mantenimiento</div>
+  </div>
+  <p style="font-size:16px;color:#666;">(las flechas dobles del diagrama original indican que se puede
+  regresar a una fase anterior si algo no cuadra — nada es 100% lineal)</p>
+
+  <h2>① Ingeniería y análisis del sistema</h2>
+  <ul>
+    <li>El software <em>nunca</em> vive solo — siempre es parte de un sistema más grande.</li>
+    <li>Se estudia el sistema completo: requisitos de TODOS sus elementos (sean o no informáticos).</li>
+    <li>De ahí se separa el subconjunto que le corresponde al software.</li>
+  </ul>
+
+  <h2>② Análisis de requisitos del software</h2>
+  <ul>
+    <li>Se estudia qué necesita cumplir el programa para funcionar bien.</li>
+    <li>Se hace <strong>junto con el cliente</strong> — él es quien manda sobre qué necesita.</li>
+    <li>Aquí se fijan las características básicas del sistema.</li>
+  </ul>
+
+  <div class="note-box">
+    Esta fase es la más importante de descuidar: si el análisis está mal,
+    <span class="callout-yellow">todo lo que sigue hereda el error</span> (diseño, código, pruebas...).
+  </div>
+
+  <h2>③ Diseño</h2>
+  <p>Ya con los requisitos claros, se estudian las partes que va a tener el programa:</p>
+  <ul>
+    <li><strong>Estructuras de datos</strong> — cómo se va a guardar/organizar la información.</li>
+    <li><strong>Arquitectura del software</strong> — qué módulos hay y cómo se relacionan entre ellos.</li>
+    <li><strong>Detalle procedimental</strong> — el algoritmo específico de cada módulo.</li>
+  </ul>
+
+  <h2>④ Codificación</h2>
+  <p>Es traducir el diseño a un lenguaje de programación real (Java, C#, Python...).
+  Ojo: codificar es la parte más "mecánica" — si el diseño ya está bien hecho, esta
+  fase debería ser casi automática.</p>
+
+  <h2>⑤ Pruebas</h2>
+  <p>Se diseñan datos y tareas para poner a prueba la aplicación <em>antes</em> de que
+  llegue a producción. Aquí se detectan errores que se nos pasaron en las fases anteriores.</p>
+
+  <h2>⑥ Mantenimiento</h2>
+  <p>El programa sigue cambiando después de entregado, por dos motivos:</p>
+  <ul>
+    <li>Errores detectados ya en producción (bugs).</li>
+    <li>Nuevas necesidades del cliente o cambios en sus procesos.</li>
+  </ul>
+
+  <div class="doodle-divider">• • •</div>
+
+  <h2>Análisis del problema</h2>
+  <p>Antes de programar cualquier cosa, hay que <span class="underline">entender</span> el problema.
+  Un análisis simplificado responde tres preguntas clave:</p>
+
+  <div class="qa">
+    <p class="q">1) ¿Qué queremos obtener? → Datos de salida</p>
+    <p style="margin-left:14px;">Hay que especificar exactamente qué produce el programa y en qué formato/tipo
+    (¿un número? ¿una fecha? ¿texto?).</p>
+  </div>
+  <div class="qa">
+    <p class="q">2) ¿De qué datos disponemos? → Datos de entrada</p>
+    <p style="margin-left:14px;">Qué información nos dan para trabajar, y también su formato.</p>
+  </div>
+  <div class="qa">
+    <p class="q">3) ¿Cómo convertimos entrada en salida? → Proceso</p>
+    <p style="margin-left:14px;">Una idea general de los pasos a seguir. Esto ya empieza a perfilar el
+    futuro algoritmo, y ayuda a detectar si nos falta información desde el inicio.</p>
+  </div>
+
+  <div class="note-box">
+    Truco para no perderte: siempre llena mentalmente esta tabla antes de programar —
+    <strong>Salida / Entrada / Proceso</strong>. Si no puedes llenar las tres columnas,
+    todavía no entiendes bien el problema.
+  </div>
+
+  <div class="doodle-divider">✎ EJEMPLOS ✎</div>
+
+  <div class="example">
+    <h3>Ejemplo 1.1 — Multiplicar sin usar la multiplicación <span class="badge">explicado en clase</span></h3>
+    <p><strong>Enunciado:</strong> Se desea realizar un programa que permita multiplicar
+    dos números enteros positivos sin utilizar el operador de multiplicación.</p>
+
+    <table class="answer-guide">
+      <tr><td>Datos de salida</td><td>El producto de los dos números — será también un entero positivo.</td></tr>
+      <tr><td>Datos de entrada</td><td>Dos números. Se supone que son enteros positivos, aunque no se va a
+      comprobar (si no lo son, el programa no funcionaría bien).</td></tr>
+      <tr><td>Proceso</td><td>Acumular el primero de los números tantas veces como indique el segundo.
+      Es decir: si tenemos <em>a</em> y <em>b</em>, vamos sumando <em>a</em> a un acumulador,
+      repitiendo esa suma <em>b</em> veces.</td></tr>
+    </table>
+
+    <p style="margin-top:10px;">Ejemplo concreto: 4 × 3 → acumulador = 0 → 0+4=4 → 4+4=8 → 8+4=12.
+    Sumamos 4, tres veces (porque b=3), y llegamos a 12. Esa idea de "sumar repetidamente"
+    ya es casi el algoritmo — solo falta traducirlo a pseudocódigo o código.</p>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo 1.2 — División por restas sucesivas <span class="badge">para resolver tú</span></h3>
+    <p><strong>Enunciado:</strong> Se desea un programa que calcule cuántas veces cabe un
+    número entero positivo <em>b</em> dentro de otro número entero positivo <em>a</em>
+    (es decir, el cociente de <em>a ÷ b</em>), sin usar el operador de división,
+    solamente restando.</p>
+    <p>Resuélvelo respondiendo tú mismo estas preguntas antes de programar:</p>
+    <ul class="checklist">
+      <li>¿Cuáles son los datos de salida y qué formato tienen?</li>
+      <li>¿Cuáles son los datos de entrada?</li>
+      <li>¿Cómo se procesan los datos de entrada para llegar a la salida?
+      (pista: piensa en restar <em>b</em> a <em>a</em> repetidamente y contar cuántas
+      restas alcanzas a hacer antes de que el resultado sea menor que <em>b</em>).</li>
+    </ul>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo 1.3 — Suma de los dígitos de un número <span class="badge">para resolver tú</span></h3>
+    <p><strong>Enunciado:</strong> Se desea un programa que, dado un número entero positivo,
+    calcule la suma de todos sus dígitos (por ejemplo, para 4527 el resultado sería 4+5+2+7 = 18).</p>
+    <p>Haz tu propio análisis del problema:</p>
+    <ul class="checklist">
+      <li>¿Qué se quiere obtener (salida) y de qué tipo es ese dato?</li>
+      <li>¿Qué dato(s) se reciben como entrada?</li>
+      <li>Describe en pocas palabras el proceso: ¿cómo se puede ir "separando" un dígito
+      a la vez de un número? (pista: piensa en el residuo de dividir entre 10, y luego en
+      dividir el número entre 10 para "quitar" ese dígito).</li>
+    </ul>
+  </div>
+
+  <div class="doodle-divider">• • •</div>
+  <p style="font-size:16px;color:#666;">Recuerda: el Análisis del problema (salida / entrada / proceso)
+  es el paso previo obligatorio a Diseño. No te avientes directo a codificar — ahí es donde más
+  tiempo se pierde arreglando errores que se pudieron evitar pensando un poco más antes.</p>
+
+  <div class="footer">Fuente: material del curso propedéutico de Lógica de Programación — Agosto 2020</div>
+
+</div>
+</body>
+</html>

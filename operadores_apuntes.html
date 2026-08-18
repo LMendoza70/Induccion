@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Operadores — Apuntes</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Caveat:wght@500;700&display=swap');
+
+:root{
+  --paper:#fdfcf5;
+  --line:#c9d8ea;
+  --margin-line:#f0a3a3;
+  --ink:#1f3a5f;
+  --ink2:#2d2d2d;
+  --accent:#c0392b;
+  --accent2:#1e7d4f;
+  --accent3:#7a4fa3;
+  --accent4:#0e7c86;
+  --accent5:#b8860b;
+  --highlight:#fff2a8;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:#e7e2d3; font-family:'Kalam', cursive;
+  color:var(--ink2); padding:24px 8px;
+}
+.notebook{
+  max-width:940px; margin:0 auto;
+  background:repeating-linear-gradient(var(--paper),var(--paper) 33px,var(--line) 34px);
+  background-color:var(--paper);
+  border-left:3px solid var(--margin-line);
+  padding:36px 30px 36px 56px; border-radius:2px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25); position:relative;
+}
+.notebook::before{
+  content:""; position:absolute; left:34px; top:0; bottom:0; width:1px;
+  background:var(--margin-line); opacity:.6;
+}
+.header{
+  font-size:14px; color:#888; text-align:right;
+  border-bottom:1px dashed #bbb; padding-bottom:6px; margin-bottom:10px;
+}
+h1{
+  font-family:'Caveat', cursive; font-size:42px; color:var(--ink);
+  margin:6px 0 2px 0; transform:rotate(-0.5deg);
+}
+.subtitle{ font-size:18px; color:#555; margin-bottom:20px; font-style:italic; }
+.tag{ display:inline-block; background:var(--highlight); padding:1px 8px; border-radius:4px; transform:rotate(-1deg); }
+h2{
+  font-family:'Caveat', cursive; font-size:32px; color:var(--accent);
+  border-bottom:2px solid var(--accent); display:inline-block; padding-bottom:2px;
+  margin-top:36px; margin-bottom:10px; transform:rotate(-0.3deg);
+}
+h2.c2{ color:var(--accent3); border-color:var(--accent3); }
+h2.c3{ color:var(--accent4); border-color:var(--accent4); }
+h2.c4{ color:var(--accent5); border-color:var(--accent5); }
+h2.c5{ color:var(--accent2); border-color:var(--accent2); }
+h3{ font-family:'Caveat', cursive; font-size:25px; color:var(--ink); margin:18px 0 6px 0; }
+p, li{ font-size:18.5px; line-height:1.55; }
+
+.note-box{
+  border:2px dashed var(--accent2); border-radius:10px; padding:12px 16px;
+  margin:14px 0; background:rgba(30,125,79,0.06); position:relative;
+}
+.note-box::before{
+  content:"📌 IMPORTANTE"; font-family:'Caveat',cursive; font-weight:700;
+  color:var(--accent2); font-size:19px; display:block; margin-bottom:4px;
+}
+.example{
+  border:2px solid var(--accent3); border-radius:12px; padding:12px 18px;
+  margin:14px 0; background:#f8f4ff; transform:rotate(-0.2deg);
+}
+.example h3{ margin-top:0; }
+.example .badge{
+  display:inline-block; background:var(--accent3); color:#fff; font-size:12px;
+  padding:2px 8px; border-radius:10px; margin-left:8px; vertical-align:middle;
+}
+.exercise{
+  border:2px solid var(--accent); border-radius:12px; padding:12px 18px;
+  margin:14px 0; background:#fff5f2; transform:rotate(0.3deg);
+}
+.exercise .badge{
+  display:inline-block; background:var(--accent); color:#fff; font-size:12px;
+  padding:2px 8px; border-radius:10px; margin-left:8px; vertical-align:middle;
+}
+.checklist{ list-style:none; padding-left:0; }
+.checklist li::before{ content:"✔️ "; }
+.underline{ text-decoration:underline; text-decoration-color:var(--accent); text-decoration-thickness:2px; }
+.doodle-divider{ text-align:center; color:#bbb; font-size:20px; letter-spacing:10px; margin:22px 0; }
+.footer{ margin-top:26px; text-align:right; font-size:14px; color:#999; border-top:1px dashed #bbb; padding-top:6px; }
+.callout-yellow{ background:var(--highlight); padding:1px 6px; border-radius:3px; }
+
+table.data{
+  width:100%; border-collapse:collapse; font-size:16px; margin:10px 0;
+}
+table.data th{
+  background:#eef4ff; color:var(--ink); text-align:left; padding:6px 8px;
+  border-bottom:2px solid var(--ink);
+}
+table.data td{ border-bottom:1px dashed #ccc; padding:6px 8px; }
+table.data.blank td.fill{ color:#bbb; font-style:italic; }
+
+.truth{ border-collapse:collapse; margin:10px auto; font-size:17px; }
+.truth th, .truth td{ border:1.5px solid var(--ink); padding:6px 14px; text-align:center; }
+.truth th{ background:#eaf7ee; color:var(--accent2); }
+.truth td.fill{ color:#bbb; font-style:italic; }
+
+.blank-note{
+  border:2px dotted #999; border-radius:10px; padding:8px 14px; color:#777;
+  font-size:15.5px; text-align:center; margin-top:8px;
+}
+.op-elem{
+  display:flex; gap:10px; align-items:center; justify-content:center; margin:12px 0; flex-wrap:wrap;
+}
+.op-elem .box{
+  border:2px solid var(--ink); border-radius:8px; padding:8px 16px; background:#eef4ff; text-align:center;
+}
+.op-elem .box.op{ background:var(--highlight); }
+.op-elem .box.op2{ background:#eaf7ee; }
+</style>
+</head>
+<body>
+<div class="notebook">
+
+  <div class="header">Tecnologías de la Información — Curso propedéutico de Lógica de Programación</div>
+
+  <p style="margin:0 0 14px 0;"><a href="./index.html" style="display:inline-block; font-size:15px; color:var(--accent); text-decoration:none; border:2px solid var(--accent3); border-radius:8px; padding:4px 12px; background:#f8f4ff;">← Volver al índice</a></p>
+
+  <h1>Operadores</h1>
+  <div class="subtitle"><span class="tag">Apuntes de clase</span> — expresiones, tipos de operadores y tablas de verdad</div>
+
+  <p><strong>Objetivo:</strong> identificar los distintos tipos de operadores (aritméticos,
+  relacionales y lógicos) y su funcionamiento al usarlos en una expresión.</p>
+
+  <p>Un <strong>dato</strong> es toda información característica de una entidad que puede ser
+  tratada por un programa. Cada dato tiene un <strong>tipo</strong> (entero, decimal, texto...)
+  y sobre esos datos se realizan <strong>operaciones</strong> — por ejemplo, el total de un
+  ticket de compra es el resultado de una serie de operaciones automatizadas.</p>
+
+  <div class="doodle-divider">• • •</div>
+
+  <h2>① Operadores y expresiones</h2>
+  <p>Una <strong>expresión</strong> es una combinación de constantes, variables, símbolos de
+  operación, paréntesis y nombres de funciones. Puede representar una unidad simple de datos
+  (un número, un carácter) o el resultado de combinar varias entidades con operadores.
+  Las expresiones también pueden representar condiciones lógicas (verdadero/falso).</p>
+  <p>Cada expresión tiene un <strong>valor</strong>, que se obtiene sustituyendo variables y
+  constantes y ejecutando las operaciones indicadas.</p>
+
+  <div class="example">
+    <h3>Ejemplo 1 — Evaluar una expresión <span class="badge">explicado en clase</span></h3>
+    <p>Expresión: <strong>X = 9 * 5 + 6</strong></p>
+    <p>Sustituimos y resolvemos siguiendo la jerarquía (primero producto, luego suma):
+    9 * 5 = 45 → X = 45 + 6 → <strong>X = 51</strong>.</p>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo 2 — Evaluar una expresión <span class="badge">para resolver</span></h3>
+    <p>Evalúa: <strong>Y = 12 + 4 * 3 − 2</strong></p>
+    <div class="blank-note">✎ espacio para que el alumno resuelva</div>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo 3 — Evaluar una expresión <span class="badge">para resolver</span></h3>
+    <p>Evalúa: <strong>Z = (8 + 2) * 3 − 5</strong></p>
+    <div class="blank-note">✎ espacio para que el alumno resuelva</div>
+  </div>
+
+  <div class="doodle-divider">• • •</div>
+
+  <h2 class="c2">② Elementos de una expresión</h2>
+  <p>Un <strong>operador</strong> es un símbolo o palabra que indica que se debe realizar
+  cierta acción entre dos o más valores, llamados <strong>operandos</strong>.</p>
+
+  <div class="op-elem">
+    <div class="box">Operando 1<br><strong>5</strong></div>
+    <div class="box op">Operador<br><strong>+</strong></div>
+    <div class="box op2">Operando 2<br><strong>7</strong></div>
+  </div>
+  <p>Los operadores se clasifican en: <strong>Aritméticos, Relacionales, Lógicos,
+  Alfanuméricos y Asociativos.</strong></p>
+
+  <div class="example">
+    <h3>Ejemplo 1 — Identificar los elementos <span class="badge">explicado en clase</span></h3>
+    <p>Expresión: <strong>8 − 3</strong></p>
+    <div class="op-elem">
+      <div class="box">Operando 1: <strong>8</strong></div>
+      <div class="box op">Operador: <strong>−</strong></div>
+      <div class="box op2">Operando 2: <strong>3</strong></div>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo 2 — Identificar los elementos <span class="badge">para resolver</span></h3>
+    <p>Expresión: <strong>12 * 4</strong> — indica cuál es el operando 1, el operador y el operando 2.</p>
+    <div class="blank-note">✎ espacio para que el alumno complete</div>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo 3 — Identificar los elementos <span class="badge">para resolver</span></h3>
+    <p>Expresión: <strong>20 / 5</strong> — indica cuál es el operando 1, el operador y el operando 2.</p>
+    <div class="blank-note">✎ espacio para que el alumno complete</div>
+  </div>
+
+  <div class="doodle-divider">• • •</div>
+
+  <h2 class="c3">③ Operadores Aritméticos</h2>
+  <p>Se usan para realizar cálculos matemáticos:</p>
+  <table class="data">
+    <tr><th>Operador</th><th>Descripción</th><th>Ejemplo</th></tr>
+    <tr><td>+ (adición)</td><td>Suma los operandos</td><td>x = y + z</td></tr>
+    <tr><td>− (resta)</td><td>Resta el derecho del izquierdo</td><td>x = y − z</td></tr>
+    <tr><td>* (multiplicación)</td><td>Multiplica los operandos</td><td>x = y * z</td></tr>
+    <tr><td>/ (división real)</td><td>Divide y da resultado real</td><td>x = y / z</td></tr>
+    <tr><td>% o MOD (módulo)</td><td>Residuo de una división entera</td><td>x = y % z</td></tr>
+    <tr><td>DIV</td><td>Divide y da resultado entero</td><td>x = y DIV z</td></tr>
+    <tr><td>^ (potencia)</td><td>Eleva x a la potencia y</td><td>x = y ^ z</td></tr>
+    <tr><td>raíz</td><td>Raíz cuadrada de un número</td><td>x = raíz(y)</td></tr>
+  </table>
+
+  <div class="example">
+    <h3>Ejemplo 1 — Tabla de operaciones <span class="badge">explicado en clase</span></h3>
+    <p>Si <strong>a = 10</strong> y <strong>b = 3</strong>:</p>
+    <table class="data">
+      <tr><th>Expresión</th><th>Cálculo</th><th>Valor</th></tr>
+      <tr><td>a + b</td><td>10 + 3</td><td>13</td></tr>
+      <tr><td>a − b</td><td>10 − 3</td><td>7</td></tr>
+      <tr><td>a * b</td><td>10 * 3</td><td>30</td></tr>
+      <tr><td>a / b</td><td>10 / 3</td><td>3.3</td></tr>
+      <tr><td>a % b</td><td>10 % 3</td><td>1</td></tr>
+      <tr><td>a DIV b</td><td>10 DIV 3</td><td>3</td></tr>
+      <tr><td>a ^ b</td><td>10 ^ 3</td><td>1000</td></tr>
+      <tr><td>raíz(a)</td><td>raíz(10)</td><td>3.16</td></tr>
+    </table>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo 2 — Tabla de operaciones <span class="badge">para resolver</span></h3>
+    <p>Si <strong>a = 20</strong> y <strong>b = 6</strong>, calcula: a + b, a − b, a * b, a / b,
+    a % b, a DIV b.</p>
+    <div class="blank-note">✎ espacio para que el alumno complete la tabla</div>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo 3 — Tabla de operaciones <span class="badge">para resolver</span></h3>
+    <p>Si <strong>a = 15</strong> y <strong>b = 4</strong>, calcula: a + b, a − b, a * b, a / b,
+    a % b, a DIV b, a ^ b.</p>
+    <div class="blank-note">✎ espacio para que el alumno complete la tabla</div>
+  </div>
+
+  <div class="doodle-divider">• • •</div>
+
+  <h2 class="c4">④ Operadores Relacionales</h2>
+  <p>Comparan dos operandos. El resultado siempre es un valor de verdad:
+  <strong>Verdadero (1)</strong> o <strong>Falso (0)</strong>.</p>
+  <table class="data">
+    <tr><th>Operador</th><th>Significado</th><th>Ejemplo</th></tr>
+    <tr><td>=</td><td>¿son iguales?</td><td>x = y</td></tr>
+    <tr><td>&lt;&gt;</td><td>¿son diferentes?</td><td>x &lt;&gt; y</td></tr>
+    <tr><td>&gt;</td><td>¿izquierdo es mayor?</td><td>x &gt; y</td></tr>
+    <tr><td>&lt;</td><td>¿izquierdo es menor?</td><td>x &lt; y</td></tr>
+    <tr><td>&gt;=</td><td>¿mayor o igual?</td><td>x &gt;= y</td></tr>
+    <tr><td>&lt;=</td><td>¿menor o igual?</td><td>x &lt;= y</td></tr>
+  </table>
+
+  <div class="example">
+    <h3>Ejemplo 1 — Evaluar expresiones relacionales <span class="badge">explicado en clase</span></h3>
+    <p>Si <strong>i = 2, j = 3, k = 4</strong>:</p>
+    <table class="data">
+      <tr><th>Expresión</th><th>Evaluación</th><th>Resultado</th></tr>
+      <tr><td>i &lt;= j</td><td>2 &lt;= 3</td><td>Verdadero</td></tr>
+      <tr><td>(i + j) &gt; k</td><td>(2+3) &gt; 4</td><td>Verdadero</td></tr>
+      <tr><td>k &lt;&gt; 4</td><td>4 &lt;&gt; 4</td><td>Falso</td></tr>
+      <tr><td>(j + k) &gt; (i + 5)</td><td>(3+4) &gt; (2+5)</td><td>Falso</td></tr>
+    </table>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo 2 — Evaluar expresiones relacionales <span class="badge">para resolver</span></h3>
+    <p>Si <strong>p = 5, q = 8, r = 3</strong>, evalúa: <code>p &gt; q</code>,
+    <code>(p + r) &lt;= q</code>, <code>r &lt;&gt; 3</code>.</p>
+    <div class="blank-note">✎ espacio para que el alumno resuelva</div>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo 3 — Evaluar expresiones relacionales <span class="badge">para resolver</span></h3>
+    <p>Si <strong>m = 12, n = 7, t = 5</strong>, evalúa: <code>(m − n) &gt;= t</code>,
+    <code>n &lt; t</code>, <code>(n + t) = m</code>.</p>
+    <div class="blank-note">✎ espacio para que el alumno resuelva</div>
+  </div>
+
+  <div class="doodle-divider">• • •</div>
+
+  <h2 class="c5">⑤ Operadores Lógicos o Booleanos</h2>
+  <p>Combinan el resultado de expresiones relacionales. Hay tres:</p>
+  <table class="data">
+    <tr><th>Operador</th><th>También se escribe</th><th>Descripción</th></tr>
+    <tr><td>AND</td><td>&amp;&amp;, *</td><td>Verdadero solo si ambas condiciones son verdaderas</td></tr>
+    <tr><td>OR</td><td>||, +</td><td>Verdadero si al menos una condición es verdadera</td></tr>
+    <tr><td>NOT</td><td>!</td><td>Invierte el valor de verdad</td></tr>
+  </table>
+
+  <div class="example">
+    <h3>Ejemplo 1 — Evaluar con operadores lógicos <span class="badge">explicado en clase</span></h3>
+    <p>Si <strong>x = 5, y = 105</strong>:</p>
+    <table class="data">
+      <tr><th>Expresión</th><th>Evaluación</th><th>Resultado</th></tr>
+      <tr><td>x &lt; 7 AND y &gt; 100</td><td>Verdadero AND Verdadero</td><td>Verdadero</td></tr>
+      <tr><td>x &lt; 7 OR y &gt; 100</td><td>Verdadero OR Verdadero</td><td>Verdadero</td></tr>
+      <tr><td>NOT x = 10</td><td>NOT (Falso)</td><td>Verdadero</td></tr>
+    </table>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo 2 — Evaluar con operadores lógicos <span class="badge">para resolver</span></h3>
+    <p>Si <strong>a = 8, b = 20</strong>, evalúa: <code>a &gt; 10 AND b &gt;= 20</code>,
+    <code>a &gt; 10 OR b &gt;= 20</code>.</p>
+    <div class="blank-note">✎ espacio para que el alumno resuelva</div>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo 3 — Evaluar con operadores lógicos <span class="badge">para resolver</span></h3>
+    <p>Si <strong>c = 15, d = 4</strong>, evalúa: <code>NOT (c &lt; d)</code>,
+    <code>(c &gt; d) AND NOT (d = 4)</code>.</p>
+    <div class="blank-note">✎ espacio para que el alumno resuelva</div>
+  </div>
+
+  <div class="doodle-divider">• • •</div>
+
+  <h2 class="c5">⑥ Tablas de verdad</h2>
+  <p>Una tabla de verdad muestra el resultado de una expresión lógica para
+  <strong>todas las combinaciones posibles</strong> de sus valores (1 = Verdadero, 0 = Falso).</p>
+
+  <div style="display:flex; gap:30px; flex-wrap:wrap; justify-content:center; margin:14px 0;">
+    <table class="truth">
+      <tr><th>x</th><th>AND</th><th>y</th><th>Resultado</th></tr>
+      <tr><td>1</td><td>&amp;&amp;</td><td>1</td><td>1</td></tr>
+      <tr><td>1</td><td>&amp;&amp;</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>&amp;&amp;</td><td>1</td><td>0</td></tr>
+      <tr><td>0</td><td>&amp;&amp;</td><td>0</td><td>0</td></tr>
+    </table>
+    <table class="truth">
+      <tr><th>x</th><th>OR</th><th>y</th><th>Resultado</th></tr>
+      <tr><td>1</td><td>||</td><td>1</td><td>1</td></tr>
+      <tr><td>1</td><td>||</td><td>0</td><td>1</td></tr>
+      <tr><td>0</td><td>||</td><td>1</td><td>1</td></tr>
+      <tr><td>0</td><td>||</td><td>0</td><td>0</td></tr>
+    </table>
+    <table class="truth">
+      <tr><th>x</th><th>NOT</th><th>Resultado</th></tr>
+      <tr><td>1</td><td>!</td><td>0</td></tr>
+      <tr><td>0</td><td>!</td><td>1</td></tr>
+    </table>
+  </div>
+
+  <div class="note-box">
+    Para construir la tabla de una expresión con <strong>dos variables</strong> siempre hay
+    <span class="callout-yellow">4 combinaciones posibles</span> (2×2): VV, VF, FV, FF.
+    Si son 3 variables, son 8 combinaciones (2×2×2).
+  </div>
+
+  <div class="example">
+    <h3>Ejemplo 1 — Construir tabla de verdad de NOT(x AND y) <span class="badge">explicado en clase</span></h3>
+    <table class="truth">
+      <tr><th>x</th><th>y</th><th>x AND y</th><th>NOT(x AND y)</th></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+    </table>
+    <p>Primero se llena la columna intermedia (x AND y) usando la tabla AND, y luego se le
+    aplica NOT a cada resultado para obtener la columna final.</p>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo 2 — Construir tabla de verdad de x OR NOT y <span class="badge">para resolver</span></h3>
+    <table class="truth">
+      <tr><th>x</th><th>y</th><th>NOT y</th><th>x OR NOT y</th></tr>
+      <tr><td>1</td><td>1</td><td class="fill">?</td><td class="fill">?</td></tr>
+      <tr><td>1</td><td>0</td><td class="fill">?</td><td class="fill">?</td></tr>
+      <tr><td>0</td><td>1</td><td class="fill">?</td><td class="fill">?</td></tr>
+      <tr><td>0</td><td>0</td><td class="fill">?</td><td class="fill">?</td></tr>
+    </table>
+    <div class="blank-note">✎ el alumno completa las columnas "NOT y" y "x OR NOT y"</div>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo 3 — Construir tabla de verdad de (x AND y) OR NOT x <span class="badge">para resolver</span></h3>
+    <table class="truth">
+      <tr><th>x</th><th>y</th><th>x AND y</th><th>NOT x</th><th>(x AND y) OR NOT x</th></tr>
+      <tr><td>1</td><td>1</td><td class="fill">?</td><td class="fill">?</td><td class="fill">?</td></tr>
+      <tr><td>1</td><td>0</td><td class="fill">?</td><td class="fill">?</td><td class="fill">?</td></tr>
+      <tr><td>0</td><td>1</td><td class="fill">?</td><td class="fill">?</td><td class="fill">?</td></tr>
+      <tr><td>0</td><td>0</td><td class="fill">?</td><td class="fill">?</td><td class="fill">?</td></tr>
+    </table>
+    <div class="blank-note">✎ el alumno completa las tres últimas columnas, en orden</div>
+  </div>
+
+  <div class="doodle-divider">• • •</div>
+  <p style="font-size:16px;color:#666;">Idea clave: los operadores <strong>aritméticos</strong>
+  producen números; los <strong>relacionales</strong> comparan y producen Verdadero/Falso; los
+  <strong>lógicos</strong> combinan esos Verdadero/Falso. Las <span class="callout-yellow">tablas
+  de verdad</span> son la forma de comprobar, combinación por combinación, que una expresión
+  lógica se comporta como esperamos.</p>
+
+  <div class="footer">Fuente: material del curso propedéutico de Lógica de Programación — Agosto 2020</div>
+
+</div>
+</body>
+</html>

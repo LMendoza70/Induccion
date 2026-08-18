@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Algoritmos, Pseudocódigo y Diagramas de flujo — Apuntes</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Caveat:wght@500;700&display=swap');
+
+:root{
+  --paper:#fdfcf5;
+  --line:#c9d8ea;
+  --margin-line:#f0a3a3;
+  --ink:#1f3a5f;
+  --ink2:#2d2d2d;
+  --accent:#c0392b;
+  --accent2:#1e7d4f;
+  --accent3:#7a4fa3;
+  --accent4:#0e7c86;
+  --highlight:#fff2a8;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  background:#e7e2d3;
+  font-family:'Kalam', cursive;
+  color:var(--ink2);
+  padding:24px 8px;
+}
+
+.notebook{
+  max-width:920px;
+  margin:0 auto;
+  background:
+    repeating-linear-gradient(
+      var(--paper),
+      var(--paper) 33px,
+      var(--line) 34px
+    );
+  background-color:var(--paper);
+  border-left:3px solid var(--margin-line);
+  padding:36px 30px 36px 56px;
+  border-radius:2px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  position:relative;
+}
+
+.notebook::before{
+  content:"";
+  position:absolute;
+  left:34px; top:0; bottom:0;
+  width:1px;
+  background:var(--margin-line);
+  opacity:.6;
+}
+
+.header{
+  font-family:'Kalam',cursive;
+  font-size:14px;
+  color:#888;
+  text-align:right;
+  border-bottom:1px dashed #bbb;
+  padding-bottom:6px;
+  margin-bottom:10px;
+}
+
+h1{
+  font-family:'Caveat', cursive;
+  font-size:42px;
+  color:var(--ink);
+  margin:6px 0 2px 0;
+  transform:rotate(-0.5deg);
+}
+
+.subtitle{
+  font-size:18px;
+  color:#555;
+  margin-bottom:20px;
+  font-style:italic;
+}
+
+.tag{
+  display:inline-block;
+  background:var(--highlight);
+  padding:1px 8px;
+  border-radius:4px;
+  transform:rotate(-1deg);
+}
+
+h2{
+  font-family:'Caveat', cursive;
+  font-size:34px;
+  color:var(--accent);
+  border-bottom:2px solid var(--accent);
+  display:inline-block;
+  padding-bottom:2px;
+  margin-top:38px;
+  margin-bottom:10px;
+  transform:rotate(-0.3deg);
+}
+
+h2.topic-pseudo{ color:var(--accent3); border-color:var(--accent3); }
+h2.topic-flow{ color:var(--accent4); border-color:var(--accent4); }
+
+h3{
+  font-family:'Caveat', cursive;
+  font-size:26px;
+  color:var(--ink);
+  margin:20px 0 6px 0;
+}
+
+p, li{
+  font-size:19px;
+  line-height:1.55;
+}
+
+.note-box{
+  border:2px dashed var(--accent2);
+  border-radius:10px;
+  padding:12px 16px;
+  margin:16px 0;
+  background:rgba(30,125,79,0.06);
+  position:relative;
+}
+.note-box::before{
+  content:"📌 IMPORTANTE";
+  font-family:'Caveat',cursive;
+  font-weight:700;
+  color:var(--accent2);
+  font-size:20px;
+  display:block;
+  margin-bottom:4px;
+}
+
+.example{
+  border:2px solid var(--accent3);
+  border-radius:12px;
+  padding:14px 18px;
+  margin:18px 0;
+  background:#f8f4ff;
+  transform:rotate(-0.2deg);
+}
+.example h3{ margin-top:0; }
+.example .badge{
+  display:inline-block;
+  background:var(--accent3);
+  color:#fff;
+  font-family:'Kalam',cursive;
+  font-size:13px;
+  padding:2px 8px;
+  border-radius:10px;
+  margin-left:8px;
+  vertical-align:middle;
+}
+
+.exercise{
+  border:2px solid var(--accent);
+  border-radius:12px;
+  padding:14px 18px;
+  margin:18px 0;
+  background:#fff5f2;
+  transform:rotate(0.3deg);
+}
+.exercise .badge{
+  display:inline-block;
+  background:var(--accent);
+  color:#fff;
+  font-family:'Kalam',cursive;
+  font-size:13px;
+  padding:2px 8px;
+  border-radius:10px;
+  margin-left:8px;
+  vertical-align:middle;
+}
+
+.checklist{ list-style:none; padding-left:0; }
+.checklist li::before{ content:"✔️ "; }
+
+.underline{
+  text-decoration:underline;
+  text-decoration-color:var(--accent);
+  text-decoration-thickness:2px;
+}
+
+.doodle-divider{
+  text-align:center;
+  color:#bbb;
+  font-size:20px;
+  letter-spacing:10px;
+  margin:26px 0;
+}
+
+.footer{
+  margin-top:30px;
+  text-align:right;
+  font-size:14px;
+  color:#999;
+  border-top:1px dashed #bbb;
+  padding-top:6px;
+}
+
+.callout-yellow{
+  background:var(--highlight);
+  padding:1px 6px;
+  border-radius:3px;
+}
+
+table.symbols{
+  width:100%;
+  border-collapse:collapse;
+  font-family:'Kalam',cursive;
+  font-size:16px;
+  margin:14px 0 6px 0;
+}
+table.symbols th{
+  text-align:left;
+  border-bottom:2px solid var(--accent4);
+  padding:5px 8px;
+  color:var(--accent4);
+}
+table.symbols td{
+  border-bottom:1px dashed #ccc;
+  padding:6px 8px;
+  vertical-align:middle;
+}
+
+.code-block{
+  background:#eef2f7;
+  border:1px solid #b9c8dc;
+  border-radius:8px;
+  padding:10px 14px;
+  font-family:'Kalam',cursive;
+  font-size:17px;
+  white-space:pre-line;
+  margin:10px 0;
+}
+
+.diagram-wrap{
+  text-align:center;
+  margin:10px 0 6px 0;
+}
+.diagram-wrap svg{ max-width:100%; height:auto; }
+
+.blank-note{
+  border:2px dotted #999;
+  border-radius:10px;
+  padding:10px 14px;
+  color:#777;
+  font-size:16px;
+  text-align:center;
+  margin-top:10px;
+}
+</style>
+</head>
+<body>
+<div class="notebook">
+
+  <div class="header">Tecnologías de la Información — Curso propedéutico de Lógica de Programación</div>
+
+  <p style="margin:0 0 14px 0;"><a href="./index.html" style="display:inline-block; font-size:15px; color:var(--accent); text-decoration:none; border:2px solid var(--accent3); border-radius:8px; padding:4px 12px; background:#f8f4ff;">← Volver al índice</a></p>
+
+  <h1>Algoritmos, Pseudocódigo <br>y Diagramas de flujo</h1>
+  <div class="subtitle"><span class="tag">Apuntes de clase</span> — 3 herramientas para resolver el mismo tipo de problemas</div>
+
+  <p>Vamos a usar <span class="underline">los mismos tres problemas</span> a lo largo de todo el tema,
+  representados de tres formas distintas: primero como algoritmo (lenguaje natural, en pasos),
+  luego como pseudocódigo, y por último como diagrama de flujo. Así se ve claramente que
+  son tres formas de expresar exactamente lo mismo.</p>
+
+  <div class="note-box">
+    Los tres problemas que usaremos:<br>
+    <strong>A)</strong> Determinar si un número es par o impar <span class="callout-yellow">(explicado en clase)</span><br>
+    <strong>B)</strong> Calcular el promedio de tres calificaciones y decir si el alumno aprobó (promedio ≥ 6) <span class="callout-yellow">(para resolver)</span><br>
+    <strong>C)</strong> Determinar cuál de dos números es mayor <span class="callout-yellow">(para resolver)</span>
+  </div>
+
+  <div class="doodle-divider">• • •</div>
+
+  <h2>① Algoritmos</h2>
+
+  <p>Un <strong>algoritmo</strong> es un conjunto ordenado y finito de operaciones simples con las
+  que podemos hallar la solución a un problema. Dado un estado inicial y una entrada, y siguiendo
+  los pasos indicados, se llega al estado final y se obtiene la solución.</p>
+
+  <p>Todo algoritmo debe cumplir estas características:</p>
+  <ul>
+    <li><strong>Tiene inicio y fin</strong>: comienza con datos específicos y termina con una solución/salida.</li>
+    <li><strong>Funciona en secuencia</strong>: está compuesto por pasos ordenados.</li>
+    <li><strong>Las secuencias son concretas</strong>: cada paso es claro, sin ambigüedad.</li>
+    <li><strong>Es abstracto</strong>: es un modelo o guía, no está atado a un lenguaje en particular.</li>
+    <li><strong>Tiene un número finito de pasos</strong>.</li>
+  </ul>
+
+  <div class="example">
+    <h3>Ejemplo A — ¿Número par o impar? <span class="badge">explicado en clase</span></h3>
+    <p><strong>Enunciado:</strong> Dado un número entero, determinar si es par o impar.</p>
+    <div class="code-block">1. Inicio.
+2. Leer el número N.
+3. Calcular el residuo de N entre 2 (N mod 2) y guardarlo en R.
+4. Si R es igual a 0, entonces N es par.
+   Si no, N es impar.
+5. Escribir el resultado ("Par" o "Impar").
+6. Fin.</div>
+    <p>Nota cómo cada paso es una instrucción concreta y sin ambigüedad, y cómo el algoritmo
+    siempre termina (paso 6) sin importar qué número se ingrese.</p>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo B — Promedio de tres calificaciones <span class="badge">para resolver</span></h3>
+    <p><strong>Enunciado:</strong> Dadas tres calificaciones de un alumno, calcular su promedio
+    y determinar si aprobó (promedio ≥ 6) o no.</p>
+    <p>Escribe tú el algoritmo en pasos numerados. Guíate con estas preguntas:</p>
+    <ul class="checklist">
+      <li>¿Cuántos datos necesitas leer al inicio?</li>
+      <li>¿Qué operación aritmética necesitas para obtener el promedio?</li>
+      <li>¿Qué instrucción de comparación necesitas para decidir "aprobó" / "no aprobó"?</li>
+      <li>No olvides los pasos de Inicio y Fin.</li>
+    </ul>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo C — El mayor de dos números <span class="badge">para resolver</span></h3>
+    <p><strong>Enunciado:</strong> Dados dos números enteros, determinar cuál de los dos es mayor
+    (o si son iguales).</p>
+    <p>Escribe tú el algoritmo en pasos numerados. Piensa en:</p>
+    <ul class="checklist">
+      <li>¿Qué dos datos hay que leer?</li>
+      <li>¿Qué comparaciones son necesarias? (mayor que, menor que, igual)</li>
+      <li>¿Cómo se reporta el resultado final?</li>
+    </ul>
+  </div>
+
+  <div class="doodle-divider">• • •</div>
+
+  <h2 class="topic-pseudo">② Pseudocódigo</h2>
+
+  <p>El <strong>pseudocódigo</strong> es una serie de pasos bien detallados y claros que conducen
+  a la resolución de un problema, escritos de forma que se puedan traducir casi directamente a un
+  lenguaje de programación.</p>
+
+  <div class="note-box" style="border-color:var(--accent3);">
+    <span style="color:var(--accent3);">📌 Cuidado:</span> como el pseudocódigo es tan fácil de pasar a
+    código real, muchos programadores se saltan el diseño y programan directo — esto es riesgoso
+    cuando no se tiene experiencia, porque se arrastran errores de lógica que no se detectaron a tiempo.
+  </div>
+
+  <div class="example">
+    <h3>Ejemplo A — ¿Número par o impar? <span class="badge">explicado en clase</span></h3>
+    <div class="code-block">Inicio
+Leer N
+R ← N MOD 2
+Si R = 0 Entonces
+    Escribir "El número es PAR"
+Sino
+    Escribir "El número es IMPAR"
+Fin Si
+Fin</div>
+    <p>Compáralo con el algoritmo en lenguaje natural del punto anterior: son los mismos pasos,
+    solo que ahora usamos una notación más cercana a un lenguaje de programación real
+    (variables, operador MOD, estructura Si/Sino).</p>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo B — Promedio de tres calificaciones <span class="badge">para resolver</span></h3>
+    <p>Traduce tu algoritmo del ejemplo B anterior a pseudocódigo. Usa variables como
+    <code>C1, C2, C3</code> para las calificaciones y <code>PROM</code> para el promedio.
+    Recuerda usar una estructura <code>Si / Sino</code> para decidir si aprobó.</p>
+    <div class="blank-note">✎ espacio para que el alumno escriba su pseudocódigo</div>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo C — El mayor de dos números <span class="badge">para resolver</span></h3>
+    <p>Traduce tu algoritmo del ejemplo C a pseudocódigo. Usa variables <code>A</code> y
+    <code>B</code>, y una estructura <code>Si / Sino Si / Sino</code> para cubrir los tres casos
+    posibles (A mayor, B mayor, o iguales).</p>
+    <div class="blank-note">✎ espacio para que el alumno escriba su pseudocódigo</div>
+  </div>
+
+  <div class="doodle-divider">• • •</div>
+
+  <h2 class="topic-flow">③ Diagramas de flujo</h2>
+
+  <p>Un <strong>diagrama de flujo</strong> es la representación gráfica, mediante símbolos
+  especiales, de los pasos o procedimientos necesarios para solucionar un problema de manera
+  secuencial y lógica. Generalmente se dibujan <em>antes</em> de programar, porque facilitan
+  detectar errores de lógica y mejoran la comunicación entre programadores y usuarios.</p>
+
+  <table class="symbols">
+    <tr><th>Símbolo</th><th>Significado</th></tr>
+    <tr><td>⬭ (óvalo)</td><td>Terminal / Inicio o Fin</td></tr>
+    <tr><td>▱ (paralelogramo)</td><td>Entrada de datos</td></tr>
+    <tr><td>▭ (rectángulo)</td><td>Proceso</td></tr>
+    <tr><td>◇ (rombo)</td><td>Decisión</td></tr>
+    <tr><td>▱ con borde curvo</td><td>Imprimir resultados</td></tr>
+    <tr><td>→ (flecha)</td><td>Flujo de datos</td></tr>
+    <tr><td>○ / ⬠ (círculo o pentágono)</td><td>Conectores</td></tr>
+  </table>
+
+  <div class="example">
+    <h3>Ejemplo A — ¿Número par o impar? <span class="badge">explicado en clase</span></h3>
+    <div class="diagram-wrap">
+<svg viewBox="0 0 620 640" xmlns="http://www.w3.org/2000/svg" font-family="Kalam, cursive">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1f3a5f"/>
+    </marker>
+  </defs>
+
+  <!-- Inicio -->
+  <ellipse cx="310" cy="35" rx="70" ry="26" fill="#eef4ff" stroke="#1f3a5f" stroke-width="2.5"/>
+  <text x="310" y="41" text-anchor="middle" font-size="18" fill="#1f3a5f">Inicio</text>
+
+  <line x1="310" y1="61" x2="310" y2="100" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Leer N (parallelogram) -->
+  <polygon points="235,105 405,105 385,155 215,155" fill="#fff2e6" stroke="#1f3a5f" stroke-width="2.5"/>
+  <text x="310" y="136" text-anchor="middle" font-size="18" fill="#1f3a5f">Leer N</text>
+
+  <line x1="310" y1="155" x2="310" y2="190" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- R <- N MOD 2 (process) -->
+  <rect x="200" y="192" width="220" height="55" fill="#eaf7ee" stroke="#1f3a5f" stroke-width="2.5"/>
+  <text x="310" y="225" text-anchor="middle" font-size="17" fill="#1f3a5f">R ← N MOD 2</text>
+
+  <line x1="310" y1="247" x2="310" y2="282" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Decision diamond -->
+  <polygon points="310,285 420,345 310,405 200,345" fill="#fdf0f0" stroke="#c0392b" stroke-width="2.5"/>
+  <text x="310" y="340" text-anchor="middle" font-size="16" fill="#c0392b">¿R = 0 ?</text>
+  <text x="310" y="360" text-anchor="middle" font-size="13" fill="#c0392b">(decisión)</text>
+
+  <!-- Sí branch (left) -->
+  <line x1="200" y1="345" x2="120" y2="345" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="160" y="335" text-anchor="middle" font-size="15" fill="#1e7d4f">Sí</text>
+  <line x1="120" y1="345" x2="120" y2="400" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <polygon points="45,405 195,405 175,455 25,455" fill="#fff2e6" stroke="#1f3a5f" stroke-width="2.5"/>
+  <text x="110" y="436" text-anchor="middle" font-size="15" fill="#1f3a5f">Escribir "Par"</text>
+
+  <!-- No branch (right) -->
+  <line x1="420" y1="345" x2="500" y2="345" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="462" y="335" text-anchor="middle" font-size="15" fill="#c0392b">No</text>
+  <line x1="500" y1="345" x2="500" y2="400" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <polygon points="425,405 595,405 575,455 405,455" fill="#fff2e6" stroke="#1f3a5f" stroke-width="2.5"/>
+  <text x="500" y="436" text-anchor="middle" font-size="15" fill="#1f3a5f">Escribir "Impar"</text>
+
+  <!-- Merge down to Fin -->
+  <line x1="110" y1="455" x2="110" y2="520" stroke="#1f3a5f" stroke-width="2.5"/>
+  <line x1="500" y1="455" x2="500" y2="520" stroke="#1f3a5f" stroke-width="2.5"/>
+  <line x1="110" y1="520" x2="500" y2="520" stroke="#1f3a5f" stroke-width="2.5"/>
+  <line x1="310" y1="520" x2="310" y2="555" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Fin -->
+  <ellipse cx="310" cy="590" rx="60" ry="26" fill="#eef4ff" stroke="#1f3a5f" stroke-width="2.5"/>
+  <text x="310" y="596" text-anchor="middle" font-size="18" fill="#1f3a5f">Fin</text>
+</svg>
+    </div>
+    <p>Compara este diagrama con el pseudocódigo del ejemplo A: cada símbolo corresponde
+    exactamente a una línea de pseudocódigo — el óvalo a Inicio/Fin, el paralelogramo a Leer/Escribir,
+    el rectángulo al cálculo, y el rombo a la estructura Si/Sino.</p>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo B — Promedio de tres calificaciones <span class="badge">para resolver</span></h3>
+    <p>Dibuja el diagrama de flujo correspondiente a tu pseudocódigo del ejemplo B. Debe incluir:</p>
+    <ul class="checklist">
+      <li>Un óvalo de Inicio y uno de Fin.</li>
+      <li>Un paralelogramo para leer las tres calificaciones.</li>
+      <li>Un rectángulo de proceso para calcular el promedio.</li>
+      <li>Un rombo de decisión para comparar el promedio contra 6.</li>
+      <li>Dos paralelogramos de salida (uno para "Aprobó", otro para "No aprobó").</li>
+    </ul>
+    <div class="blank-note">✎ espacio para que el alumno dibuje su diagrama de flujo</div>
+  </div>
+
+  <div class="exercise">
+    <h3>Ejemplo C — El mayor de dos números <span class="badge">para resolver</span></h3>
+    <p>Dibuja el diagrama de flujo correspondiente a tu pseudocódigo del ejemplo C. Pista: como hay
+    tres casos posibles (A mayor, B mayor, iguales), vas a necesitar <strong>dos rombos de decisión</strong>
+    encadenados, o un rombo de decisión múltiple.</p>
+    <ul class="checklist">
+      <li>Inicio → Leer A y B</li>
+      <li>Primer rombo: ¿A &gt; B?</li>
+      <li>Si no, segundo rombo: ¿A = B?</li>
+      <li>Tres posibles salidas → Fin</li>
+    </ul>
+    <div class="blank-note">✎ espacio para que el alumno dibuje su diagrama de flujo</div>
+  </div>
+
+  <div class="doodle-divider">• • •</div>
+  <p style="font-size:16px;color:#666;">Idea clave para recordar: <strong>Algoritmo → Pseudocódigo → Diagrama de flujo</strong>
+  no son tres temas distintos, son <span class="callout-yellow">tres formas de representar la misma solución</span>,
+  cada una útil en un momento distinto del diseño de un programa.</p>
+
+  <div class="footer">Fuente: material del curso propedéutico de Lógica de Programación — Agosto 2020</div>
+
+</div>
+</body>
+</html>
